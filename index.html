@@ -1,189 +1,117 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#24543d">
-  <title>Чарын-2026 — отметки КП</title>
-  <link rel="manifest" href="manifest.webmanifest">
-  <style>
-    :root { font-family: system-ui, -apple-system, Segoe UI, sans-serif; color: #18231d; background: #f3f6f3; }
-    body { margin: 0; padding: 16px; padding-bottom: 36px; max-width: 640px; margin-inline: auto; }
-    header { background: #24543d; color: white; padding: 18px; border-radius: 16px; }
-    h1 { font-size: 1.35rem; margin: 0 0 6px; } header p { margin: 0; opacity: .9; }
-    .card { background: white; padding: 16px; margin-top: 14px; border-radius: 14px; box-shadow: 0 2px 10px #0000000c; }
-    label { display: block; font-weight: 650; margin-bottom: 6px; }
-    input, select, button { width: 100%; box-sizing: border-box; font: inherit; border-radius: 10px; padding: 12px; }
-    input, select { border: 1px solid #bbc8bf; background: white; }
-    button { border: 0; background: #24543d; color: white; font-weight: 650; margin-top: 10px; cursor: pointer; }
-    button.secondary { background: #e4ece6; color: #1b3d2c; }
-    button.danger { background: #9d302b; }
-    button:disabled { opacity: .5; cursor: not-allowed; }
-    .hint { color: #53635a; font-size: .92rem; line-height: 1.4; }
-    .status { padding: 10px 12px; background: #edf3ef; border-radius: 10px; margin-top: 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
-    .entry { border-top: 1px solid #e4eae5; padding: 12px 0; }
-    .entry:first-child { border-top: 0; }
-    .pill { display: inline-block; font-size: .78rem; padding: 3px 8px; border-radius: 999px; background: #e4ece6; }
-    .ok { color: #17633b; } .warn { color: #8b4d00; }
-    footer { padding: 14px 2px; font-size: .82rem; color: #65736a; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1f5138">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Чарын-2026 — отметки КП</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#18231d;background:#f3f6f2}
+body{max-width:640px;margin:0 auto;padding:16px}
+h1{font-size:1.45rem;margin:.3rem 0}
+.card{background:#fff;border-radius:14px;padding:16px;margin:14px 0;box-shadow:0 2px 10px #0000000d}
+label{display:block;font-weight:600;margin:12px 0 6px}
+input,select,button{box-sizing:border-box;width:100%;font:inherit;border-radius:10px;padding:12px}
+input,select{border:1px solid #b9c8bd;background:#fff}
+button{border:0;background:#1f5138;color:#fff;font-weight:650;margin-top:10px}
+button.secondary{background:#e4eee7;color:#1f5138}
+button:disabled{opacity:.55}
+.small{font-size:.9rem;color:#526257}
+#status{white-space:pre-wrap;line-height:1.4}
+.record{padding:10px 0;border-bottom:1px solid #e3e9e4}
+</style>
 </head>
 <body>
-  <header>
-    <h1>🏕 Чарын-2026</h1>
-    <p>Офлайн-фиксация контрольных точек</p>
-  </header>
+<h1>🏕 Чарын-2026</h1>
+<p class="small">Офлайн-фиксация контрольных пунктов</p>
 
-  <section class="card">
-    <label for="participant">Фамилия и имя участника</label>
-    <input id="participant" autocomplete="name" placeholder="Например: Иванов Иван">
-    <p class="hint">Укажите то же имя, что и при регистрации в Telegram-боте.</p>
-  </section>
+<div class="card">
+<label for="participant">Имя участника</label>
+<input id="participant" autocomplete="name" placeholder="Фамилия Имя">
+<label for="checkpoint">Контрольный пункт</label>
+<select id="checkpoint">
+<option>КП-А</option><option>КП-Б</option><option>КП-В</option><option>КП-Г</option><option>КП-Д</option>
+<option>Ночёвка №1</option><option>Ночёвка №2</option><option>Ночёвка №3</option><option>Финиш</option>
+</select>
+<button id="mark">📍 Зафиксировать моё местоположение</button>
+<div id="status" class="small" role="status">Отметки сохраняются на этом телефоне. GPS работает без мобильного интернета, но геолокация должна быть включена.</div>
+</div>
 
-  <section class="card">
-    <label for="checkpoint">Контрольная точка</label>
-    <select id="checkpoint">
-      <option value="КП-А">📍 Контрольная точка А</option>
-      <option value="КП-Б">📍 Контрольная точка Б</option>
-      <option value="КП-В">📍 Контрольная точка В</option>
-      <option value="КП-Г">📍 Контрольная точка Г</option>
-      <option value="КП-Д">📍 Контрольная точка Д</option>
-      <option value="Ночёвка №1">⛺ Ночёвка №1</option>
-      <option value="Ночёвка №2">⛺ Ночёвка №2</option>
-      <option value="Ночёвка №3">⛺ Ночёвка №3</option>
-      <option value="Финиш">🏁 Финиш</option>
-    </select>
-    <button id="record">📍 Зафиксировать моё местоположение</button>
-    <div id="status" class="status" role="status">Готово к фиксации. Для получения координат разрешите доступ к местоположению.</div>
-    <p class="hint">Для GPS нужен включённый параметр «Местоположение» на Android. Лучше фиксировать точку на открытом месте и дождаться получения координат.</p>
-  </section>
-
-  <section class="card">
-    <h2 style="font-size:1.1rem;margin-top:0">Сохранённые отметки <span id="count" class="pill">0</span></h2>
-    <div id="entries"><p class="hint">Пока отметок нет.</p></div>
-    <button id="export" class="secondary">⬇️ Выгрузить отметки в JSON</button>
-    <button id="share" class="secondary">📤 Поделиться файлом отметок</button>
-    <button id="clear" class="danger">Удалить все отметки с этого телефона</button>
-    <p class="hint">Отметки сохраняются в памяти этого браузера. Сейчас автоматической отправки в Telegram-бот ещё нет. Выгрузка в JSON — временный способ перенести данные, когда появится связь.</p>
-  </section>
-
-  <footer>
-    Прототип v0.1 · Координаты и время сохраняются на устройстве. Это не защищает от подмены GPS или времени телефона.
-  </footer>
+<div class="card">
+<h3>Мои отметки</h3>
+<div id="records" class="small">Отметок пока нет.</div>
+<button id="send">📨 Отправить организатору</button>
+<button id="export" class="secondary">Сохранить файл JSON</button>
+<p class="small">Для отправки нужен интернет. Откроется системное меню «Поделиться» — выбери Telegram и чат организатора. Если меню не поддерживает отправку файла, приложение предложит скачать JSON.</p>
+</div>
 
 <script>
-const STORAGE_KEY = "charyn2026_checkins_v1";
 const $ = id => document.getElementById(id);
-let checkins = [];
+const STORAGE_KEY = "charyn2026_marks_v1";
+const NAME_KEY = "charyn2026_participant";
+const savedName = localStorage.getItem(NAME_KEY) || "";
+$("participant").value = savedName;
 
-function load() {
-  try { checkins = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
-  catch { checkins = []; }
-  const savedName = localStorage.getItem("charyn2026_participant") || "";
-  $("participant").value = savedName;
-  render();
+function getMarks(){ try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]")}catch(e){return []} }
+function saveMarks(marks){localStorage.setItem(STORAGE_KEY,JSON.stringify(marks));render()}
+function render(){
+ const marks=getMarks();
+ $("records").innerHTML="";
+ if(!marks.length){$("records").textContent="Отметок пока нет.";return}
+ marks.slice().reverse().forEach(m=>{
+  const div=document.createElement("div");div.className="record";
+  div.textContent=`${m.checkpoint} — ${new Date(m.timestamp).toLocaleString()}${Number.isFinite(m.accuracy)?` (точность ±${Math.round(m.accuracy)} м)`:""}`;
+  $("records").appendChild(div);
+ });
 }
-function save() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(checkins));
-  localStorage.setItem("charyn2026_participant", $("participant").value.trim());
-  render();
+function makeFile(){
+ const participant=$("participant").value.trim()||"Без имени";
+ const payload={event:"Чарын-2026",participant,exported_at:new Date().toISOString(),marks:getMarks()};
+ return new File([JSON.stringify(payload,null,2)],`charyn-2026-${participant.replace(/[^\p{L}\p{N}-]+/gu,"_")}.json`,{type:"application/json"});
 }
-function fmtTime(iso) {
-  return new Date(iso).toLocaleString("ru-RU", { dateStyle: "medium", timeStyle: "medium" });
+function downloadFile(file){
+ const url=URL.createObjectURL(file);const a=document.createElement("a");a.href=url;a.download=file.name;a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1500);
 }
-function render() {
-  $("count").textContent = String(checkins.length);
-  if (!checkins.length) {
-    $("entries").innerHTML = '<p class="hint">Пока отметок нет.</p>';
-    return;
-  }
-  $("entries").innerHTML = [...checkins].reverse().map((c, idx) => `
-    <div class="entry">
-      <strong>${escapeHtml(c.checkpoint)}</strong> <span class="pill">сохранено</span><br>
-      <span>${escapeHtml(c.participant)}</span><br>
-      <span class="hint">${fmtTime(c.timestamp)}</span><br>
-      <span class="hint">${c.latitude.toFixed(6)}, ${c.longitude.toFixed(6)} · точность ±${Math.round(c.accuracy)} м</span>
-    </div>`).join("");
-}
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-}
-function downloadJson() {
-  const data = {
-    event: "Чарын-2026",
-    exported_at: new Date().toISOString(),
-    checkins
-  };
-  const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json;charset=utf-8"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url; a.download = "charyn-2026-checkins.json"; a.click();
-  URL.revokeObjectURL(url);
-}
-$("record").addEventListener("click", () => {
-  const participant = $("participant").value.trim();
-  if (!participant || participant.split(/\s+/).length < 2) {
-    $("status").textContent = "Сначала укажите фамилию и имя участника.";
-    $("participant").focus(); return;
-  }
-  localStorage.setItem("charyn2026_participant", participant);
-  if (!("geolocation" in navigator)) {
-    $("status").textContent = "Этот браузер не поддерживает получение GPS.";
-    return;
-  }
-  $("record").disabled = true;
-  $("status").textContent = "Получаю координаты GPS… Подождите.";
-  navigator.geolocation.getCurrentPosition(pos => {
-    const checkpoint = $("checkpoint").value;
-    const exists = checkins.some(c => c.participant.toLocaleLowerCase() === participant.toLocaleLowerCase() && c.checkpoint === checkpoint);
-    if (exists) {
-      $("status").textContent = "Эта контрольная точка уже сохранена для данного участника на этом телефоне. Повторная отметка не добавлена.";
-      $("record").disabled = false; return;
-    }
-    const c = {
-      event: "Чарын-2026",
-      participant,
-      checkpoint,
-      timestamp: new Date().toISOString(),
-      latitude: pos.coords.latitude,
-      longitude: pos.coords.longitude,
-      accuracy: pos.coords.accuracy,
-      position_timestamp: pos.timestamp
-    };
-    checkins.push(c); save();
-    $("status").textContent = `Отметка сохранена на телефоне.\n${checkpoint}\n${fmtTime(c.timestamp)}\nТочность GPS: ±${Math.round(c.accuracy)} м`;
-    $("record").disabled = false;
-  }, err => {
-    const messages = {
-      1: "Доступ к местоположению запрещён. Разрешите его для сайта в настройках браузера.",
-      2: "Местоположение сейчас недоступно. Включите GPS и попробуйте на открытом месте.",
-      3: "GPS не ответил вовремя. Попробуйте ещё раз."
-    };
-    $("status").textContent = messages[err.code] || "Не удалось получить координаты: " + err.message;
-    $("record").disabled = false;
-  }, { enableHighAccuracy: true, timeout: 30000, maximumAge: 0 });
+$("participant").addEventListener("change",()=>localStorage.setItem(NAME_KEY,$("participant").value.trim()));
+$("mark").addEventListener("click",()=>{
+ const participant=$("participant").value.trim();
+ if(!participant){$("status").textContent="Сначала укажи имя участника.";return}
+ localStorage.setItem(NAME_KEY,participant);
+ const checkpoint=$("checkpoint").value;
+ const marks=getMarks();
+ if(marks.some(m=>m.participant===participant&&m.checkpoint===checkpoint)){ $("status").textContent="Этот КП уже отмечен для данного участника.";return}
+ if(!navigator.geolocation){$("status").textContent="Браузер не поддерживает геолокацию.";return}
+ $("mark").disabled=true;$("status").textContent="Получаю координаты GPS… ожидание до 2 минут.";
+ navigator.geolocation.getCurrentPosition(pos=>{
+  const mark={participant,checkpoint,timestamp:new Date().toISOString(),latitude:pos.coords.latitude,longitude:pos.coords.longitude,accuracy:pos.coords.accuracy,position_timestamp:new Date(pos.timestamp).toISOString()};
+  marks.push(mark);saveMarks(marks);$("status").textContent=`Отметка ${checkpoint} сохранена на телефоне.\nКоординаты: ${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}\nТочность: примерно ${Math.round(pos.coords.accuracy)} м`;
+  $("mark").disabled=false;
+ },err=>{
+  const msgs={1:"Нет разрешения на геолокацию.",2:"Телефон не смог определить местоположение. Проверь GPS и выйди на открытое место.",3:"GPS не ответил за 2 минуты. Попробуй ещё раз на открытом месте."};
+  $("status").textContent=msgs[err.code]||"Не удалось получить координаты.";
+  $("mark").disabled=false;
+ },{enableHighAccuracy:true,timeout:120000,maximumAge:0});
 });
-$("export").addEventListener("click", downloadJson);
-$("share").addEventListener("click", async () => {
-  const blob = new Blob([JSON.stringify({event:"Чарын-2026", exported_at:new Date().toISOString(), checkins}, null, 2)], {type:"application/json"});
-  const file = new File([blob], "charyn-2026-checkins.json", {type:"application/json"});
-  if (navigator.canShare && navigator.canShare({files:[file]}) && navigator.share) {
-    try { await navigator.share({title:"Отметки Чарын-2026", files:[file]}); }
-    catch(e) { if (e.name !== "AbortError") $("status").textContent = "Не удалось открыть меню отправки файла."; }
-  } else {
-    downloadJson();
-    $("status").textContent = "Файл скачан. Его можно отправить организатору, когда появится связь.";
-  }
+$("export").addEventListener("click",()=>{localStorage.setItem(NAME_KEY,$("participant").value.trim());downloadFile(makeFile());$("status").textContent="Файл JSON подготовлен для сохранения."});
+$("send").addEventListener("click",async()=>{
+ const participant=$("participant").value.trim();
+ if(!participant){$("status").textContent="Сначала укажи имя участника.";return}
+ localStorage.setItem(NAME_KEY,participant);
+ const marks=getMarks();
+ if(!marks.length){$("status").textContent="Пока нет отметок для отправки.";return}
+ const file=makeFile();
+ if(navigator.canShare && navigator.canShare({files:[file]}) && navigator.share){
+  try{await navigator.share({files:[file],title:"Отметки Чарын-2026",text:`Отметки КП участника: ${participant}`});$("status").textContent="Меню отправки открыто. Выбери Telegram и чат организатора."}
+  catch(e){if(e.name!=="AbortError"){$("status").textContent="Не удалось открыть меню отправки. Сохрани JSON-файл и отправь его через Telegram.";downloadFile(file)}}
+ }else{
+  downloadFile(file);
+  $("status").textContent="Телефон не поддерживает отправку файла напрямую из браузера. Файл JSON скачан — прикрепи его в Telegram и отправь организатору.";
+ }
 });
-$("clear").addEventListener("click", () => {
-  if (confirm("Удалить все отметки с этого телефона? Это действие нельзя отменить.")) {
-    checkins = []; save(); $("status").textContent = "Все отметки удалены с этого телефона.";
-  }
-});
-if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
-  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
-}
-load();
+if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}))}
+render();
 </script>
 </body>
 </html>
